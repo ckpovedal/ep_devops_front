@@ -44,11 +44,11 @@ jobs:
           username: ${{ secrets.EC2_FRONTEND_USER }}
           key: ${{ secrets.EC2_FRONTEND_SSH_KEY }}
           script: |
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
-            docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }}
-            docker stop pacientes-web || true
-            docker rm pacientes-web || true
-            docker run -d \
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+            sudo docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_FRONTEND }}:${{ env.IMAGE_TAG }}
+            sudo docker stop pacientes-web ec2-user-frontend-1 frontend || true
+            sudo docker rm pacientes-web ec2-user-frontend-1 frontend || true
+            sudo docker run -d \
               --name pacientes-web \
               --restart always \
               -p 80:80 \
